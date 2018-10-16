@@ -9,6 +9,7 @@ class User(BaseModel, db.Model):
     email = db.Column(db.String(200), unique=True)
     _password_hash = db.Column(db.String(300), nullable=False)
     tweets = relationship('Tweet', back_populates='user')
+    followers = relationship('Follower', back_populates='follower')
 
     @validates('email')
     def validate_email(self, key, email):
