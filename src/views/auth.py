@@ -1,14 +1,31 @@
-from flask.views import MethodView
+from src.views.base import BaseView
+from src.models import User
+from flask import request
+from src import db
+import sqlite3
 
-class Auth(MethodView):
-    def get(self):
-        pass
-
+class Signin(BaseView):
     def post(self):
-        pass
+        print(request)
+        return ""
 
-    def put(self):
-        pass
 
-    def delete(self):
-        pass
+class Signup(BaseView):
+    def post(self):
+        return self._create_user(request.form)
+
+    def _create_user(self, args):
+        if not('name' in args and 'email' in args and 'password' in args):
+            return self._404('Invalid data')
+
+        user = User(name=args['name'], email=args['email'], password=args['password'])
+
+        try:
+            user.save()
+        except Exception as e:
+            return self._404('Email already exists')
+        
+        return self._success({
+            'name': user.name,
+            'email': user.email
+        })

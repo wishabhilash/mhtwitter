@@ -1,6 +1,6 @@
 from src import app, db
 import click
-from src.db import *
+from src.models import *
 
 @app.cli.command()
 def createdb():
