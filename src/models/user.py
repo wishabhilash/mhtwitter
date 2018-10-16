@@ -8,7 +8,7 @@ class User(BaseModel, db.Model):
     name = db.Column(db.String(150), nullable=False)
     email = db.Column(db.String(200), unique=True)
     _password_hash = db.Column(db.Text, nullable=False)
-    # tweets = relationship('Tweet', back_populates='user')
+    tweets = relationship('Tweet', back_populates='user')
     # followers = relationship('Follower', back_populates='follower')
     is_active = db.Column(db.Boolean, nullable=False, default=True)
 
@@ -23,7 +23,7 @@ class User(BaseModel, db.Model):
         assert '@' in email
         return email
 
-    def validate_user(self, password):
+    def authenticate(self, password):
         return check_password_hash(self._password_hash, password)
 
     @hybrid_property
@@ -34,7 +34,7 @@ class User(BaseModel, db.Model):
     def password(self, _password):
         self._password_hash = generate_password_hash(_password)
 
-    def get(self, email):
+    def get_by_email(self, email):
         users = User.query.filter(User.email == email)
         if users.count() == 1:
             return users[0]

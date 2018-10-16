@@ -1,5 +1,5 @@
 from src.views.base import BaseView
-from src.models import User
+from src import models
 from flask import request
 from src import db, jwt, app
 import sqlite3
@@ -16,25 +16,29 @@ class Auth(BaseView):
         return self._authenticate_user(args['email'], args['password'])
 
     def _authenticate_user(self, email, password):
-        user = User().get(email)
+        user = models.User().get_by_email(email)
         if user is None:
             return self._404('User does\'t exist.')
 
-        if user.validate_user(password):
-            access_token = create_access_token(
-                user.email, 
-                expires_delta=timedelta(days=app.config['ACCESS_TOKEN_EXPIRY'])
-            )
-            refresh_token = create_refresh_token(
-                user.email,
-                expires_delta=timedelta(days=app.config['REFRESH_TOKEN_EXPIRY'])
-            )
+        if user.authenticate(password):
+            access_token, refresh_token = self._create_tokens(user.email)
             return self._success({
                 'access_token': access_token,
                 'refresh_token': refresh_token
             })
         else:
             return self._404('Invalid credentials.')
+
+    def _create_tokens(self, identity):
+        access_token = create_access_token(
+            identity, 
+            expires_delta=timedelta(days=app.config['ACCESS_TOKEN_EXPIRY'])
+        )
+        refresh_token = create_refresh_token(
+            identity,
+            expires_delta=timedelta(days=app.config['REFRESH_TOKEN_EXPIRY'])
+        )
+        return access_token, refresh_token
 
 
 class Signup(BaseView):
@@ -46,7 +50,7 @@ class Signup(BaseView):
         return self._create_user(args)
 
     def _create_user(self, args):
-        user = User(name=args['name'], email=args['email'], password=args['password'])
+        user = models.User(name=args['name'], email=args['email'], password=args['password'])
         try:
             user.save()
         except Exception as e:

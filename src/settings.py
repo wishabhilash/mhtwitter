@@ -11,3 +11,8 @@ class Config(object):
     REFRESH_TOKEN_EXPIRY = 30 #days
 
     JWT_SECRET_KEY = "$6$DXKKMwci96tYMW3C"
+
+
+    DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
+    DATE_FORMAT = "%Y-%m-%d"
+    TIME_FORMAT = "%H:%M:%S"

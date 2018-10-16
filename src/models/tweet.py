@@ -8,6 +8,13 @@ class Tweet(BaseModel, db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = relationship('User', back_populates='tweets', foreign_keys=[user_id])
 
+    def __init__(self, user=None, tweet=None):
+        if user is not None:
+            self.user_id = user.id
+
+        if tweet is not None:
+            self.tweet = tweet
+
     @hybrid_property
     def tweet(self):
         return self._tweet
@@ -20,3 +27,4 @@ class Tweet(BaseModel, db.Model):
     @tweet.setter
     def tweet(self, _tweet):
         self._tweet = _tweet
+
