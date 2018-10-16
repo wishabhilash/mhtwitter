@@ -34,6 +34,13 @@ class User(BaseModel, db.Model):
     def password(self, _password):
         self._password_hash = generate_password_hash(_password)
 
+    def get_by_oid(self, oid):
+        users = User.query.filter(User.oid == oid)
+        if users.count() == 1:
+            return users[0]
+        else:
+            return None
+
     def get_by_email(self, email):
         users = User.query.filter(User.email == email)
         if users.count() == 1:

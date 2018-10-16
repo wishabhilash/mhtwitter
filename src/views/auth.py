@@ -11,7 +11,6 @@ class Auth(BaseView):
     def post(self):
         args = request.form
         if not('email' in args and 'password' in args):
-            print(args)
             return self._404('Invalid data')
         return self._authenticate_user(args['email'], args['password'])
 
@@ -21,7 +20,7 @@ class Auth(BaseView):
             return self._404('User does\'t exist.')
 
         if user.authenticate(password):
-            access_token, refresh_token = self._create_tokens(user.email)
+            access_token, refresh_token = self._create_tokens(user.oid)
             return self._success({
                 'access_token': access_token,
                 'refresh_token': refresh_token
@@ -54,9 +53,10 @@ class Signup(BaseView):
         try:
             user.save()
         except Exception as e:
-            return self._404('Email already exists')
+            return self._404('User already exists')
         
         return self._success({
             'name': user.name,
-            'email': user.email
+            'email': user.email,
+            'oid': user.oid
         })
