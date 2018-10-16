@@ -9,7 +9,7 @@ class User(BaseModel, db.Model):
     email = db.Column(db.String(200), unique=True)
     _password_hash = db.Column(db.Text, nullable=False)
     tweets = relationship('Tweet', back_populates='user')
-    # followers = relationship('Follower', back_populates='follower')
+    followers = relationship('Follower', back_populates='follower')
     is_active = db.Column(db.Boolean, nullable=False, default=True)
 
     def __init__(self, name=None, email=None, password=None):
