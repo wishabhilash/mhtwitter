@@ -12,17 +12,18 @@ class User(BaseModel, db.Model):
     # followers = relationship('Follower', back_populates='follower')
     is_active = db.Column(db.Boolean, nullable=False, default=True)
 
-    def __init__(self, name, email, password):
-        self.name = name
-        self.email = email
-        self.password = password
+    def __init__(self, name=None, email=None, password=None):
+        if name is not None and email is not None and password is not None:
+            self.name = name
+            self.email = email
+            self.password = password
 
     @validates('email')
     def validate_email(self, key, email):
         assert '@' in email
         return email
 
-    def validate_user(self, key, password):
+    def validate_user(self, password):
         return check_password_hash(self._password_hash, password)
 
     @hybrid_property
@@ -32,3 +33,10 @@ class User(BaseModel, db.Model):
     @password.setter
     def password(self, _password):
         self._password_hash = generate_password_hash(_password)
+
+    def get(self, email):
+        users = User.query.filter(User.email == email)
+        if users.count() == 1:
+            return users[0]
+        else:
+            return None
