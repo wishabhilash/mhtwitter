@@ -1,5 +1,5 @@
 from src import app
-from src.views import user, auth, tweet
+from src.views import user, auth, tweet, follower
 
 # AUTH
 app.add_url_rule('/auth/signup.json', view_func=auth.Signup.as_view('signup'), methods=['POST',])
@@ -12,3 +12,11 @@ app.add_url_rule(
     '/tweet/<string:oid>.json', view_func=tweet.Tweet.as_view('read_tweets'), methods=['GET'])
 app.add_url_rule(
     '/tweet.json', view_func=tweet.Tweet.as_view('post_tweet'), methods=['POST'])
+
+app.add_url_rule(
+    '/follower/<string:oid>.json',
+    view_func=follower.Follower.as_view('get_followers'), methods=['GET'])
+
+app.add_url_rule(
+    '/follower.json',
+    view_func=follower.Follower.as_view('create_followers'), methods=['POST'])

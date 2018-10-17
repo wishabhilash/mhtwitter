@@ -36,4 +36,3 @@ class Tweet(BaseView):
             return self._404('Encountered error while saving')
         return self._success()
         
-    

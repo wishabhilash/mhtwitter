@@ -45,7 +45,7 @@ class User(BaseModel, db.Model):
             return None
 
     def get_by_email(self, email):
-        users = User.query.filter(User.email == email)
+        users = self.query.filter(User.email == email)
         if users.count() == 1:
             return users[0]
         else:
