@@ -16,3 +16,5 @@ class Config(object):
     DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
     DATE_FORMAT = "%Y-%m-%d"
     TIME_FORMAT = "%H:%M:%S"
+
+    STATIC_PATH = os.path.join(BASE_PATH, 'src', 'ui')

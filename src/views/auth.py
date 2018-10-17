@@ -2,7 +2,6 @@ from src.views.base import BaseView
 from src import models
 from flask import request
 from src import db, jwt, app
-import sqlite3
 from flask_jwt_extended import create_access_token, create_refresh_token
 from datetime import timedelta
 

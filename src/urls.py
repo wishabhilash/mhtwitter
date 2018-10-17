@@ -1,5 +1,7 @@
 from src import app
-from src.views import user, auth, tweet, follower
+from src.views import (
+    user, auth, tweet, follower, static
+)
 
 # AUTH
 app.add_url_rule('/auth/signup.json', view_func=auth.Signup.as_view('signup'), methods=['POST',])
@@ -20,3 +22,6 @@ app.add_url_rule(
 app.add_url_rule(
     '/follower.json',
     view_func=follower.Follower.as_view('create_followers'), methods=['POST'])
+
+app.add_url_rule('/', view_func=static.Index.as_view('index'), methods=['GET'])
+app.add_url_rule('/asset/<path:path>', view_func=static.Static.as_view('asset'), methods=['GET'])
