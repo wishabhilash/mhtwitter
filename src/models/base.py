@@ -9,6 +9,9 @@ class BaseModel(object):
     _created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     _modified_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
+    def __init__(self):
+        self.oid = str(uuid.uuid1())
+
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -19,4 +22,4 @@ class BaseModel(object):
 
     @created_at.setter
     def created_at(self, _created_at):
-    	self._created_at = _created_at
+        self._created_at = _created_at

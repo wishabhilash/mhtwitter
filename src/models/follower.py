@@ -4,9 +4,10 @@ from sqlalchemy.orm import validates, relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 
 class Follower(BaseModel, db.Model):
-	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-	follower_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    leader_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    follower_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-	user = relationship('User', back_populates='user', foreign_keys=[user_id])
-	follower = relationship('User', back_populates='followers', foreign_keys=[follower_id])
-	
+    leader = relationship('User', foreign_keys=[leader_id])
+    follower = relationship('User', foreign_keys=[follower_id])
+
+    

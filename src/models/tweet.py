@@ -15,6 +15,8 @@ class Tweet(BaseModel, db.Model):
         if tweet is not None:
             self.tweet = tweet
 
+        super().__init__()
+
     @hybrid_property
     def tweet(self):
         return self._tweet

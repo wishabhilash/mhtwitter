@@ -9,7 +9,7 @@ class User(BaseModel, db.Model):
     email = db.Column(db.String(200), unique=True)
     _password_hash = db.Column(db.Text, nullable=False)
     tweets = relationship('Tweet', back_populates='user')
-    followers = relationship('Follower', back_populates='follower')
+    # followers = relationship('Follower', back_populates='follower')
     is_active = db.Column(db.Boolean, nullable=False, default=True)
 
     def __init__(self, name=None, email=None, password=None):
@@ -17,6 +17,8 @@ class User(BaseModel, db.Model):
             self.name = name
             self.email = email
             self.password = password
+
+        super().__init__()
 
     @validates('email')
     def validate_email(self, key, email):
@@ -35,7 +37,8 @@ class User(BaseModel, db.Model):
         self._password_hash = generate_password_hash(_password)
 
     def get_by_oid(self, oid):
-        users = User.query.filter(User.oid == oid)
+        users = self.query.filter(User.oid == oid)
+        
         if users.count() == 1:
             return users[0]
         else:
@@ -47,3 +50,6 @@ class User(BaseModel, db.Model):
             return users[0]
         else:
             return None
+
+    def __repr__(self):
+        return self.email

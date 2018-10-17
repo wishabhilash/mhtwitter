@@ -12,12 +12,13 @@ class Tweet(BaseView):
     def _get_tweets_of_user(self, oid):
         user = models.User().get_by_oid(oid)
         tweets = []
-        for t in user.tweets:
-            tweets.append({
-                'created_at': t.created_at,
-                'tweet': t.tweet,
-                'oid': t.oid
-            })
+        if user.tweets is not None:
+            for t in user.tweets:
+                tweets.append({
+                    'created_at': t.created_at,
+                    'tweet': t.tweet,
+                    'oid': t.oid
+                })
         return self._success({
             'tweets': tweets
         })
