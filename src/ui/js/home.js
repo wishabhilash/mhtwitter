@@ -62,6 +62,7 @@ class Home {
             let followerList = followers.map(function(follower) {
                 return follower.oid;
             });
+            followerList.push(oid);
             let userSuggestions = users[0].data.map(function(user){
                 if ($.inArray(user.oid, followerList) < 0) {
                     return user;

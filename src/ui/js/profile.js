@@ -44,14 +44,23 @@ class Profile {
             self._setupUserProfile(data.data)
         });
 
-        this.followerService.getFollowers(oid)
-        .then(function (data) {
-            self._setupFollowers(data.data);
-        })
-
         this.tweetService.getTweetsOfUser(oid)
         .then(function(data) {
             self._setupUserTweet(data.data);
+        })
+
+        this.followerService.getFollowers(oid)
+        .then(function (data) {
+            self._setupFollowers(data.data);
+            // self._setUpFollowButton(data.data, oid);
+        });
+    }
+
+    _setUpFollowButton(data, userOid) {
+        $.each(data, function(index, user) {
+            if(user.oid == userOid) {
+                $('.follow-button').hide();
+            }
         })
     }
 
@@ -61,8 +70,13 @@ class Profile {
     }
 
     _setupFollowers(data) {
-        let followerHtml = this._renderFollowers(data.followers);
-        $('.left-sidebar .followers .followers-list').html(followerHtml);
+        let followerHtml = this._renderUserCell(data);
+        $('.left-sidebar .followers .users-list').html(followerHtml);
+    }
+
+    _setupUserSuggestions(data) {
+        let userSuggestions = this._renderUserCell(data);
+        $('.user-suggestions .users-list').html(userSuggestions);
     }
 
     _setupUserTweet(data) {
@@ -70,13 +84,14 @@ class Profile {
         $('.tweet-area').html(tweetHtml);
     }
 
-    _renderFollowers(followers) {
-        return followers.map(function(follower) {
-            return `<div class="follower">
+    _renderUserCell(users) {
+        return users.map(function(user) {
+            if(user == undefined) return;
+            return `<div class="user">
                         <div class="name">
-                            <a href="/user/${follower.oid}">${follower.name}</a>
+                            <a href="/user/${user.oid}">${user.name}</a>
                         </div>
-                        <div class="email">${follower.email}</div>
+                        <div class="email">${user.email}</div>
                     </div>`;
         }).join('')
     }
@@ -98,14 +113,21 @@ class Profile {
         $('.tweet-area').html(tweetHtml);
     }
 
-    _followUser(leader_oid, follower_oid) {
-        this.followerService.followUser(leader_oid, follower_oid);
+    followUser(leader_oid, follower_oid) {
+        this.followerService.followUser(leader_oid, follower_oid)
+        .then(function(){
+            window.location.reaload();
+        });
     }
 }
 
 class UserService extends BaseService {
     getUser(oid) {
         return this._ajax("/user/" + oid + '.json');
+    }
+
+    getUsers() {
+        return this._ajax("/user.json");
     }
 }
 
@@ -138,7 +160,7 @@ class FollowerService extends BaseService{
     }
 
     followUser(leader_oid, follower_oid) {
-        this._ajax("/follower.json", 'POST', {
+        return this._ajax("/follower.json", 'POST', {
             leader_oid: leader_oid,
             follower_oid: follower_oid
         })
@@ -166,7 +188,7 @@ $(function(){
 
     $(".follow-button").click(function(){
         let user_oid = parseJwt(accessToken).identity;
-        profile.followUser(leader_oid, user_oid);
+        profile.followUser(profile_user_oid, user_oid);
     })
 
     $(".logout a").click(function() {
