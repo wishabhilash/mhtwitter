@@ -1,8 +1,46 @@
 * {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
-.wrapper {
-	display: grid;
+body {
+    background-color: #00FFF8;
 }
+.empty-area {
+    grid-area: empty;
+}
+
+.signin, .signup {
+    background-color: #09BDFF;
+    padding: 2em;
+    border-radius: 1em;
+}
+
+.signin {
+    grid-area: signin;
+    
+}
+
+.signup {
+    grid-area: signup;
+}
+
+.header {
+    grid-area: header;
+    height: 3em;
+    color: #fff;
+    font-size: 3em;
+}
+
+.container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 30% auto;
+    color: #000;
+    grid-template-areas: 
+        "header header header header"
+        ". signin signup .";
+    grid-gap: 2em;
+}
+

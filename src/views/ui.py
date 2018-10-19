@@ -17,3 +17,8 @@ class Static(StaticMixin, BaseView):
     def get(self, path):
         content = self._get_file(path)
         return Response(content, mimetype=self.mimes[path.split('.')[-1]])
+
+class Home(StaticMixin, BaseView):
+    def get(self):
+        content = self._get_file("templates/home.html")
+        return Response(content, mimetype="text/html")

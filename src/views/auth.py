@@ -2,7 +2,7 @@ from src.views.base import BaseView
 from src import models
 from flask import request
 from src import db, jwt, app
-from flask_jwt_extended import create_access_token, create_refresh_token
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required
 from datetime import timedelta
 
 
@@ -59,3 +59,11 @@ class Signup(BaseView):
             'email': user.email,
             'oid': user.oid
         })
+
+
+class ValidateAccessToken(BaseView):
+
+    @jwt_required
+    def post(self):
+        return self._success()
+        

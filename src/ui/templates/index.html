@@ -4,16 +4,32 @@
     <title></title>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="box">A</div>
-        <div class="box">B</div>
-        <div class="box">C</div>
-        <div class="box">D</div>
-        <div class="box">E</div>
-        <div class="box">F</div>
+    <div class="container">
+        <div class="header" align="center">
+            <h4>Chirper</h4>
+        </div>
+        <div class="signin">
+            <div>Signin</div>
+            <div class="signin-controls">
+                <div class="signin-email"><input type="text" placeholder="Email" name="signin-email"></div>
+                <div class="signin-password"><input type="password" placeholder="Password" name="signin-password"></div>
+                <div><button class="signin-submit">Login</button></div>
+            </div>
+        </div>
+        <div class="signup">
+            <div>Signup</div>
+            <div class="signup-controls">
+                <div class="signup-name"><input placeholder="Name" type="text" name="signup-name"></div>
+                <div class="signup-email"><input type="text" placeholder="Email" name="signup-email"></div>
+                <div class="signup-password"><input type="password" placeholder="Password" name="signup-password"></div>
+                <div><button class="signup-submit">Submit</button></div>
+            </div>
+        </div>
     </div>
 
     <!-- STATIC FILES -->
     <link rel="stylesheet" type="text/css" href="asset/css/index.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="asset/js/index.js"></script>
 </body>
 </html>

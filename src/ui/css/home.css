@@ -1,0 +1,51 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    grid-area: header;
+    background-color: #7B87F5;
+    height: 10em;
+}
+
+.tweet-area {
+    grid-area: tweetArea;
+}
+
+.left-sidebar {
+    grid-area: leftSidebar;
+}
+
+.container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    background-color: #fff;
+    color: #444;
+    grid-template-areas: 
+        "header header header"
+        "leftSidebar tweetArea tweetArea";
+    /*grid-gap: 01em;*/
+}
+
+.box {
+    color: #000;
+    /*border: 1px dashed #000;*/
+    padding: 0.5em;
+    font-size: 150%;
+}
+
+.tweet-box {
+    border-radius: 0.2em;
+    background-color: #7B87F5;
+    height: 4em;
+    margin-bottom: 0.5em;
+}
+
+.profile {
+    height: 10em;
+    background-color: #7B87F5;
+    border-radius: 0.2em;
+}
