@@ -22,3 +22,8 @@ class Home(StaticMixin, BaseView):
     def get(self):
         content = self._get_file("templates/home.html")
         return Response(content, mimetype="text/html")
+
+class Profile(StaticMixin, BaseView):
+    def get(self, oid):
+        content = self._get_file("templates/profile.html")
+        return Response(content, mimetype="text/html")

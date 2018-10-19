@@ -17,10 +17,12 @@ class Tweet(BaseView):
                 tweets.append({
                     'created_at': t.created_at,
                     'tweet': t.tweet,
-                    'oid': t.oid
+                    'oid': t.oid,
+                    'name': user.name,
+                    'email': user.email
                 })
         return self._success({
-            'tweets': tweets
+            'tweets': list(reversed(tweets))
         })
 
     @jwt_required

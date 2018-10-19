@@ -15,18 +15,14 @@ class Follower(BaseView):
             return self._404("User doesn't exist.")
 
         followers = models.Follower().get_by_user(user)
-        print(followers[0].follower.tweets)
-        tweets = []
+        result = []
         for follower in followers:
-            for tweet in follower.follower.tweets:
-                tweets.append({
-                    'created_at': tweet.created_at,
-                    'tweet': tweet.tweet,
-                    'oid': tweet.oid
-                })
-        return self._success({
-            'tweets': list(reversed(sorted(tweets, key=lambda x: x['created_at'])))
-        })
+            result.append({
+                'name': follower.follower.name,
+                'email': follower.follower.email,
+                'oid': follower.follower.oid
+            })
+        return self._success(result)
 
     @jwt_required
     def post(self):
@@ -41,3 +37,32 @@ class Follower(BaseView):
         follower = models.Follower().create_follower(args['leader_oid'], args['follower_oid'])
         print(follower)
 
+
+class FollowerTweets(BaseView):
+
+    @jwt_required
+    def get(self, oid):
+        return self._get_tweets_of_followers(oid)
+
+    def _get_tweets_of_followers(self, oid):
+        user = models.User().get_by_oid(oid)
+        if user is None:
+            return self._404("User doesn't exist.")
+
+        followers = models.Follower().get_by_user(user)
+        tweets = []
+        for follower in followers:
+            for tweet in follower.follower.tweets:
+                tweets.append({
+                    'created_at': tweet.created_at,
+                    'tweet': tweet.tweet,
+                    'oid': tweet.oid,
+                    'follower': {
+                        'name': follower.follower.name,
+                        'email': follower.follower.email,
+                        'oid': follower.follower.oid
+                    }
+                })
+        return self._success({
+            'tweets': list(reversed(sorted(tweets, key=lambda x: x['created_at'])))
+        })

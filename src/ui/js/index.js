@@ -16,7 +16,7 @@ class Auth {
         let self = this;
         self.validateAccessToken()
         .then(function(data){
-            // self._goToHome()
+            self._goToHome()
         }).catch(function(err){
             console.log(err);
         });
@@ -40,12 +40,9 @@ class Auth {
 
     signin() {
         let self = this;
-        this.validateAccessToken()
-        .then(function(){
-            self._goToHome()
-        }).catch(function(err){
-            return self._fetchTokens()
-        }).then(function(data){
+        
+        self._fetchTokens()
+        .then(function(data){
             self._goToHome();
         }).catch(function(e) {
             console.log(e);
@@ -58,13 +55,14 @@ class Auth {
     }
 
     _fetchTokens() {
+        let self = this;
         let email = $('.signin-email input').val();
         let password = $('.signin-password input').val();
         
-        this.authService.signin(email, password)
+        return this.authService.signin(email, password)
         .then(function(data) {
-            this._setAccessToken(data.data['access_token'])
-            this._setRefreshToken(data.data['refresh_token'])
+            self._setAccessToken(data.data['access_token'])
+            self._setRefreshToken(data.data['refresh_token'])
             return data;
         });
     }
@@ -136,7 +134,6 @@ class AuthService {
 function indexPageView() {
     if (location.search.length) {
         let params = location.search.substring(1).split('=')
-        console.log(params)
         if(params[1] == 'signup') {
             $(".signin").hide();
         } else if(params[1] == 'signin') {

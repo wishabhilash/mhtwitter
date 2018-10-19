@@ -65,6 +65,7 @@
     font-size: 0.5em;
 }
 
+
 .header div {
     display: inline-block;
 }
@@ -73,7 +74,7 @@
     display: block;
 }
 
-.followers, .user-suggestions {
+.followers, .users-still-unfollowed {
     height: 10em;
     background-color: #7B87F5;
     border-radius: 0.2em;
@@ -81,11 +82,11 @@
     overflow-y: auto;
 }
 
-.user-suggestions {
+.users-still-unfollowed {
     background-color: #dadada;
 }
 
-.users-list .user {
+.followers-list .follower, .users-still-unfollowed .user {
     border: 1px solid #dadada;
     margin-top: 0.2em;
     padding: 0.5em;
@@ -93,10 +94,10 @@
     border-radius: 0.1em;
 }
 
-.users-list .user .name, {
+.followers-list .follower .name {
     font-size: 0.8em;
 }
 
-.users-list .user .email {
+.followers-list .follower .email {
     font-size: 0.5em;
 }
