@@ -100,3 +100,45 @@
 .users-list .user .email {
     font-size: 0.5em;
 }
+
+.overlay {
+    background-color: rgba(0,0,0,0.5);
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+}
+
+.overlay .tweet-modal {
+    position: absolute;
+    height: 15em;
+    width: 40em;
+    background-color: #fff;
+    top: 10em;
+    left: calc(50% - 20em);
+    z-index: 2;
+    border-radius: 1em;
+    background-color: #dadada;
+}
+
+.overlay .tweet-modal .modal-header {
+    padding: 1em;
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.overlay .tweet-modal .modal-body {
+    padding: 1em;
+}
+
+.overlay .tweet-modal .modal-body textarea {
+    width: 98%;
+    height: 8em;
+    padding: 0.5em;
+}
+
+.overlay .tweet-modal .modal-body .tweet-controls {
+    text-align: right;
+}

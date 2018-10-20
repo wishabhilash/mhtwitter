@@ -28,14 +28,26 @@ class Follower(BaseView):
     def post(self):
         args = request.form
         if not ('leader_oid' in args and 'follower_oid' in args):
-            return self._404("Invalid data.")
-        
-        self._create_follower(args)
-        return self._success()
+            return self._404("Invalid data.")        
+        return self._create_follower(args)
 
     def _create_follower(self, args):
-        follower = models.Follower().create_follower(args['leader_oid'], args['follower_oid'])
-        print(follower)
+        if args['leader_oid'] == args['follower_oid']:
+            return self._404("User can't follow ownself.")
+            
+        leader_user = models.User().get_by_oid(args['leader_oid'])
+        follower_user = models.User().get_by_oid(args['follower_oid'])
+        
+        followerObj = models.Follower()
+        followerExists = followerObj.query.filter(
+            models.Follower.leader==leader_user,
+            models.Follower.follower==follower_user
+        ).all()
+        if not followerExists:
+            follower = models.Follower().create_follower(args['leader_oid'], args['follower_oid'])
+            return self._success()
+        else:
+            return self._404("User is already a follower")
 
 
 class FollowerTweets(BaseView):

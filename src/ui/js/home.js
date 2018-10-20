@@ -68,14 +68,13 @@ class Home {
                     return user;
                 }
             })
-            console.log(userSuggestions)
             self._setupUserSuggestions(userSuggestions);
         })
     }
 
     _setupUserProfile(data) {
-        $('.header .name h4').html(data.name.toUpperCase())
-        $('.header .email h6').html(data.email)
+        $('.header .name h4').html(`<a href="/user/${data.oid}">${data.name.toUpperCase()}</a>`);
+        $('.header .email h6').html(data.email);
     }
 
     _setupFollowers(data) {
