@@ -101,7 +101,7 @@
     font-size: 0.5em;
 }
 
-.overlay {
+#tweet-modal-overlay {
     background-color: rgba(0,0,0,0.5);
     height: 100%;
     width: 100%;
@@ -111,7 +111,7 @@
     display: none;
 }
 
-.overlay .tweet-modal {
+#tweet-modal-overlay .tweet-modal {
     position: absolute;
     height: 15em;
     width: 40em;
@@ -123,23 +123,23 @@
     background-color: #dadada;
 }
 
-.overlay .tweet-modal .modal-header {
+#tweet-modal-overlay .tweet-modal .modal-header {
     padding: 1em;
     font-size: 1em;
     font-weight: bold;
     text-align: center;
 }
 
-.overlay .tweet-modal .modal-body {
+#tweet-modal-overlay .tweet-modal .modal-body {
     padding: 1em;
 }
 
-.overlay .tweet-modal .modal-body textarea {
+#tweet-modal-overlay .tweet-modal .modal-body textarea {
     width: 98%;
     height: 8em;
     padding: 0.5em;
 }
 
-.overlay .tweet-modal .modal-body .tweet-controls {
+#tweet-modal-overlay .tweet-modal .modal-body .tweet-controls {
     text-align: right;
 }

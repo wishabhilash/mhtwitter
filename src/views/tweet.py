@@ -21,9 +21,7 @@ class Tweet(BaseView):
                     'name': user.name,
                     'email': user.email
                 })
-        return self._success({
-            'tweets': list(reversed(tweets))
-        })
+        return self._success(list(reversed(tweets)))
 
     @jwt_required
     def post(self):

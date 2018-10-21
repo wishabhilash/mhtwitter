@@ -3,7 +3,8 @@
 import DefaultView from "/asset/js/views.js";
 import TweetModal from "/asset/js/components/tweetModal.js";
 import FollowButton from "/asset/js/components/followButton.js";
-
+import TweetList from "/asset/js/components/tweetList.js";
+import FollowerList from "/asset/js/components/followerList.js";
 
 class Profile extends DefaultView {
 
@@ -14,21 +15,20 @@ class Profile extends DefaultView {
             self._setupUserProfile(data.data)
         });
 
-        this.tweetService.getTweetsOfUser(oid)
-        .then(function(data) {
-            self._setupUserTweet(data.data);
-        })
+        let followerList = new FollowerList('followerslist')
+        followerList.run()
 
-        this.followerService.getFollowers(oid)
-        .then(function (data) {
-            self._setupFollowers(data.data);
-        });
+        let tweetModal = new TweetModal('tweetbox');
+        tweetModal.onTweetPublished = function (tweetContent) {        
+            tweetModal.closeModal();
+        }
+        tweetModal.run()
+        
+        let followButton = new FollowButton('followbutton', oid);
+        followButton.run();
 
-    }
-
-    _setupUserTweet(data) {
-        let tweetHtml = this._renderTweets(data.tweets);
-        $('.tweet-area').html(tweetHtml);
+        let tweetList = new TweetList('tweetlist', oid)
+        tweetList.run()
     }
 }
 
@@ -38,17 +38,8 @@ $(function(){
     let profile_user_oid = hrefSplit[hrefSplit.length-1];
     
     let profile = new Profile(profile_user_oid);
-    let signedInUser = profile.parseJwt(profile.getAccessToken()).identity;
 
-    let tweetModal = new TweetModal('tweetbox');
-    tweetModal.onTweetPublished = function (tweetContent) {        
-        tweetModal.closeModal();
-    }
-    tweetModal.run()
     
-    let followButton = new FollowButton('followbutton', profile_user_oid);
-    followButton.run();
-
     $(".page-controls .logout").click(function() {
         localStorage.clear();
         profile.goToSignin();

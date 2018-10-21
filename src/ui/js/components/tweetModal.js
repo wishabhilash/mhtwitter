@@ -1,7 +1,7 @@
 'use strict';
 
 import BaseComponent from "/asset/js/components/base.js";
-import TweetService from "/asset/js/services.js";
+import {TweetService} from "/asset/js/services.js";
 
 export default class TweetModal extends BaseComponent {
     constructor(tagName) {
@@ -11,9 +11,9 @@ export default class TweetModal extends BaseComponent {
     }
 
     _render() {
-        return `<div class="overlay">
+        return `<div id="tweet-modal-overlay">
             <div class="tweet-modal">
-                <div class="modal-header">Chirp</div>
+                <div class="modal-header">Tweet</div>
                 <div class="modal-body">
                     <div class="tweet-input">
                         <textarea placeholder="What's on your mind?"></textarea>
@@ -30,26 +30,26 @@ export default class TweetModal extends BaseComponent {
 
     _bindEvents() {
         let self = this;
-        $('.overlay .tweet-modal .modal-body textarea').keyup(function() {
-            let tweetLength = $('.overlay .tweet-modal .modal-body textarea').val().length;
-            $('.overlay .tweet-modal .modal-body .char-count').html(`(${tweetLength}/280)`);
+        $('#tweet-modal-overlay .modal-body textarea').keyup(function() {
+            let tweetLength = $('#tweet-modal-overlay .modal-body textarea').val().length;
+            $('#tweet-modal-overlay .modal-body .char-count').html(`(${tweetLength}/280)`);
             if (tweetLength > 280) {
-                $('.overlay .tweet-modal .modal-body .char-count').css('color', 'red');
-                $('.overlay .tweet-modal .modal-body .tweet-publish-button').hide();
+                $('#tweet-modal-overlay .modal-body .char-count').css('color', 'red');
+                $('#tweet-modal-overlay .modal-body .tweet-publish-button').hide();
             } else {
-                $('.overlay .tweet-modal .modal-body .char-count').css('color', 'black');
-                $('.overlay .tweet-modal .modal-body .tweet-publish-button').show();
+                $('#tweet-modal-overlay .modal-body .char-count').css('color', 'black');
+                $('#tweet-modal-overlay .modal-body .tweet-publish-button').show();
             }
         })
 
-        $('.overlay .tweet-modal .modal-body .tweet-cancel-button').click(function() {
-            $('.overlay').hide();
+        $('#tweet-modal-overlay .modal-body .tweet-cancel-button').click(function() {
+            $('#tweet-modal-overlay').hide();
         })
 
-        $('.overlay .tweet-modal .modal-body .tweet-publish-button').click(function() {
-            let tweetContent = $('.overlay .tweet-modal .modal-body textarea').val();
+        $('#tweet-modal-overlay .modal-body .tweet-publish-button').click(function() {
+            let tweetContent = $('#tweet-modal-overlay .modal-body textarea').val();
             if(!tweetContent.length) return false;
-            console.log(self.tweetService)
+            
             self.tweetService.postTweet(self.signedInUserOid, tweetContent)
             .then(function(){
                 self.onTweetPublished(tweetContent);
@@ -62,10 +62,10 @@ export default class TweetModal extends BaseComponent {
     }
 
     closeModal() {
-        $('.overlay .tweet-modal .modal-body .tweet-cancel-button').click();
+        $('#tweet-modal-overlay .tweet-modal .modal-body .tweet-cancel-button').click();
     }
 
     openModal() {
-        $('.overlay').show();
+        $('#tweet-modal-overlay').show();
     }
 }

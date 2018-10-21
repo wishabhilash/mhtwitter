@@ -75,6 +75,4 @@ class FollowerTweets(BaseView):
                         'oid': follower.follower.oid
                     }
                 })
-        return self._success({
-            'tweets': list(reversed(sorted(tweets, key=lambda x: x['created_at'])))
-        })
+        return self._success(list(reversed(sorted(tweets, key=lambda x: x['created_at']))))
