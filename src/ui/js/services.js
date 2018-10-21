@@ -46,7 +46,6 @@ class TweetService extends BaseService{
     }
 
     postTweet(userOid, tweet) {
-        console.log(userOid, tweet);
         return this._ajax('/tweet.json', 'POST', {
             'oid': userOid,
             'content': tweet

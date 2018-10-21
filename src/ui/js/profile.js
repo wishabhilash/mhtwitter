@@ -1,16 +1,11 @@
 'use strict';
 
-import {UserService, TweetService, FollowerService} from "/asset/js/services.js";
+import DefaultView from "/asset/js/views.js";
+import TweetModal from "/asset/js/tweetModal.js";
 
-class Profile {
-    constructor(oid) {
-        this.userService = new UserService();
-        this.tweetService = new TweetService();
-        this.followerService = new FollowerService();
-        this._setupHome(oid)
-    }
-
-    _setupHome(oid) {
+class Profile extends DefaultView {
+    
+    _setupView(oid) {
         let self = this;
         this.userService.getUser(oid)
         .then(function(data) {
@@ -37,51 +32,7 @@ class Profile {
         })
     }
 
-    _setupUserProfile(data) {
-        $('.header .name h4').html(data.name.toUpperCase())
-        $('.header .email h6').html(data.email)
-    }
-
-    _setupFollowers(data) {
-        let followerHtml = this._renderUserCell(data);
-        $('.left-sidebar .followers .users-list').html(followerHtml);
-    }
-
-    _setupUserSuggestions(data) {
-        let userSuggestions = this._renderUserCell(data);
-        $('.user-suggestions .users-list').html(userSuggestions);
-    }
-
     _setupUserTweet(data) {
-        let tweetHtml = this._renderTweets(data.tweets);
-        $('.tweet-area').html(tweetHtml);
-    }
-
-    _renderUserCell(users) {
-        return users.map(function(user) {
-            if(user == undefined) return;
-            return `<div class="user">
-                        <div class="name">
-                            <a href="/user/${user.oid}">${user.name}</a>
-                        </div>
-                        <div class="email">${user.email}</div>
-                    </div>`;
-        }).join('')
-    }
-
-    _renderTweets(tweets) {
-        return tweets.map(function(tweet) {
-            return `<div class="tweet-box">
-                <div class="content">${tweet.tweet}</div>
-                <div class="meta">
-                    <div class="name">${tweet.name}</div>
-                    <div class="timestamp">${tweet.created_at}</div>
-                </div>
-            </div>`;
-        }).join('')
-    }
-
-    _setupFollowersTweet(data) {
         let tweetHtml = this._renderTweets(data.tweets);
         $('.tweet-area').html(tweetHtml);
     }
@@ -109,17 +60,34 @@ $(function(){
     if (!accessToken) {
         goToSignin();
     }
+   
     let hrefSplit = location.href.split('/');
-    let profile_user_oid = hrefSplit[hrefSplit.length-1]
+    let profile_user_oid = hrefSplit[hrefSplit.length-1].trim('#')
     let profile = new Profile(profile_user_oid);
+    let oid = parseJwt(accessToken).identity;
+
+    let tweetModal = new TweetModal();
+    tweetModal.run()
+
+    tweetModal.onTweetPublish = function (tweetContent) {
+        home.postTweet(oid, tweetContent).then(function(){
+            tweetModal.closeModal();
+        });
+    }
 
     $(".follow-button").click(function(){
         let user_oid = parseJwt(accessToken).identity;
         profile.followUser(profile_user_oid, user_oid);
     })
 
-    $(".logout a").click(function() {
+    $(".page-controls .logout").click(function() {
         localStorage.clear();
         goToSignin();
     })
+
+    $(".page-controls .post-tweet").click(function(){
+        tweetModal.openModal();
+    })
+
+
 });

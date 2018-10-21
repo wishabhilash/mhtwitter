@@ -14,8 +14,8 @@
             <div class="follow-button"><button type="button">Follow</button></div>
         </div>
         <div class="box page-controls">
-            <a class="post-tweet" href="#">Chirp</a>
-            <a href="#" class="logout">Logout</a>
+            <a href="javascript:void(0)" class="post-tweet">Chirp</a>
+            <a href="javascript:void(0)" class="logout">Logout</a>
         </div>
 
 
@@ -40,26 +40,13 @@
         </div>
     </div>
 
-    <div class="overlay">
-        <div class="tweet-modal">
-            <div class="modal-header">Chirp</div>
-            <div class="modal-body">
-                <div class="tweet-input">
-                    <textarea placeholder="What's on your mind?"></textarea>
-                </div>
-                <div class="tweet-controls">
-                    <span class="char-count">(0/280)</span>
-                    <button class="tweet-cancel-button" type="button">Cancel</button>
-                    <button class="tweet-publish-button" type="button">Publish</button>
-                </div>
-            </div>
-        </div>
-    </div>
     
     <!-- STATIC FILES -->
     <link rel="stylesheet" type="text/css" href="/asset/css/profile.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script type="module" src="/asset/js/services.js"></script>
+    <script type="module" src="/asset/js/views.js"></script>
+    <script type="module" src="/asset/js/tweetModal.js"></script>
     <script type="module" src="/asset/js/profile.js"></script>
 </body>
 </html>
