@@ -1,33 +1,7 @@
 'use strict';
 
-class BaseService {
-    constructor() {
-        this.accessToken = localStorage.getItem('accessToken', null);
-    }
+import {UserService, TweetService, FollowerService} from "/asset/js/services.js";
 
-    _ajax(url, method, data) {
-        var self = this;
-        if (url == undefined) {
-            return false;
-        }
-
-        if (method == undefined) {
-            method = 'GET';
-        }
-
-        if (data == undefined) {
-            data = {};
-        }
-        return $.ajax({
-            url: url,
-            type: method.toUpperCase(),
-            data: data,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Bearer ' + self.accessToken);
-            }
-        })
-    }
-}
 
 class Home {
     constructor(oid) {
@@ -70,6 +44,10 @@ class Home {
             })
             self._setupUserSuggestions(userSuggestions);
         })
+    }
+
+    postTweet(userOid, tweet) {
+        return this.tweetService.postTweet(userOid, tweet)
     }
 
     _setupUserProfile(data) {
@@ -134,47 +112,6 @@ class Home {
     }
 }
 
-class UserService extends BaseService {
-    getUser(oid) {
-        return this._ajax("/user/" + oid + '.json');
-    }
-
-    getUsers() {
-        return this._ajax("/user.json");
-    }
-}
-
-class TweetService extends BaseService{
-    constructor() {
-        super();
-        this.followerService = new FollowerService();
-        
-    }
-
-    getTweetsOfUser(oid) {
-        return this._ajax("/tweet/" + oid + '.json')
-    }
-
-    getTweetsOfFollowers(oid) {
-        return this._ajax("/follower/" + oid + "/tweets.json")
-    }
-
-    postTweet(tweet) {
-
-    }
-}
-
-
-class FollowerService extends BaseService{
-    getFollowers(userOid) {
-        return this._ajax("/follower/" + userOid + '.json');
-    }
-
-    followUser(userOid) {
-
-    }
-}
-
 function parseJwt (token) {
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace('-', '+').replace('_', '/');
@@ -193,8 +130,37 @@ $(function(){
     let oid = parseJwt(accessToken).identity;
     let home = new Home(oid);
 
-    $(".logout a").click(function() {
+    $(".page-controls .logout").click(function() {
         localStorage.clear();
         goToSignin();
+    })
+
+    $('.overlay .tweet-modal .modal-body textarea').keyup(function() {
+        let tweetLength = $('.overlay .tweet-modal .modal-body textarea').val().length;
+        $('.overlay .tweet-modal .modal-body .char-count').html(`(${tweetLength}/280)`);
+        if (tweetLength > 280) {
+            $('.overlay .tweet-modal .modal-body .char-count').css('color', 'red');
+            $('.overlay .tweet-modal .modal-body .tweet-publish-button').hide();
+        } else {
+            $('.overlay .tweet-modal .modal-body .char-count').css('color', 'black');
+            $('.overlay .tweet-modal .modal-body .tweet-publish-button').show();
+        }
+    })
+
+    $(".page-controls .post-tweet").click(function(){
+        $('.overlay').show();
+    })
+
+    $('.overlay .tweet-modal .modal-body .tweet-cancel-button').click(function() {
+        $('.overlay').hide();
+    })
+
+    $('.overlay .tweet-modal .modal-body .tweet-publish-button').click(function() {
+        let tweetContent = $('.overlay .tweet-modal .modal-body textarea').val();
+        if(!tweetContent.length) return false;
+
+        home.postTweet(oid, tweetContent).then(function(){
+            $('.overlay .tweet-modal .modal-body .tweet-cancel-button').click();
+        });
     })
 });

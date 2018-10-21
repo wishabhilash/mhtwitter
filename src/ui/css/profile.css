@@ -3,7 +3,7 @@
     padding: 0;
 }
 
-.header, .chirper-home, .logout {
+.header, .chirper-home, .page-controls {
     grid-area: header;
     background-color: #7B87F5;
     height: 2em;
@@ -25,8 +25,8 @@
     grid-area: availableUsers;
 }
 
-.logout {
-    grid-area: logout;
+.page-controls {
+    grid-area: pagecontrols;
     text-align: right;
 }
 
@@ -38,7 +38,7 @@
     background-color: #fff;
     color: #444;
     grid-template-areas: 
-        "chirperHome header logout"
+        "chirperHome header pagecontrols"
         "leftSidebar tweetArea tweetArea"
         "availableUsers tweetArea tweetArea";
 }
@@ -96,4 +96,47 @@
 
 .users-list .user .email {
     font-size: 0.5em;
+}
+
+.overlay {
+    background-color: rgba(0,0,0,0.5);
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    display: none;
+}
+
+.overlay .tweet-modal {
+    position: absolute;
+    height: 15em;
+    width: 40em;
+    background-color: #fff;
+    top: 10em;
+    left: calc(50% - 20em);
+    z-index: 2;
+    border-radius: 1em;
+    background-color: #dadada;
+}
+
+.overlay .tweet-modal .modal-header {
+    padding: 1em;
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.overlay .tweet-modal .modal-body {
+    padding: 1em;
+}
+
+.overlay .tweet-modal .modal-body textarea {
+    width: 98%;
+    height: 8em;
+    padding: 0.5em;
+}
+
+.overlay .tweet-modal .modal-body .tweet-controls {
+    text-align: right;
 }
