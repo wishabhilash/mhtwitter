@@ -5,7 +5,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="box chirper-home"><a href="/home">Chirper</a></div>
+        <div class="box chirper-home"><a href="/home">Twitter</a></div>
         <div class="box header">
             <div class="user-info">
                 <div class="name"><h4></h4></div>
@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="box page-controls">
-            <a href="javascript:void(0)" class="post-tweet">Chirp</a>
+            <a href="javascript:void(0)" class="post-tweet">Tweet</a>
             <a href="javascript:void(0)" class="logout">Logout</a>
         </div>
 
@@ -58,27 +58,15 @@
         </div>
     </div>
 
-    <div class="overlay">
-        <div class="tweet-modal">
-            <div class="modal-header">Chirp</div>
-            <div class="modal-body">
-                <div class="tweet-input">
-                    <textarea placeholder="What's on your mind?"></textarea>
-                </div>
-                <div class="tweet-controls">
-                    <span class="char-count">(0/280)</span>
-                    <button class="tweet-cancel-button" type="button">Cancel</button>
-                    <button class="tweet-publish-button" type="button">Publish</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
+    <tweetbox></tweetbox>
+
     <!-- STATIC FILES -->
     <link rel="stylesheet" type="text/css" href="/asset/css/home.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script type="module" src="/asset/js/services.js"></script>
     <script type="module" src="/asset/js/views.js"></script>
+    <script type="module" src="/asset/js/components/base.js"></script>
+    <script type="module" src="/asset/js/components/tweetModal.js"></script>
     <script type="module" src="/asset/js/home.js"></script>
 </body>
 </html>

@@ -1,9 +1,12 @@
 'use strict';
 
 import DefaultView from "/asset/js/views.js";
-import TweetModal from "/asset/js/tweetModal.js";
+import TweetModal from "/asset/js/components/tweetModal.js";
 
 class Home extends DefaultView {
+    constructor() {
+        super()
+    }
 
     _setupView(oid) {
         let self = this;
@@ -61,36 +64,21 @@ class Home extends DefaultView {
     }
 }
 
-function parseJwt (token) {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace('-', '+').replace('_', '/');
-    return JSON.parse(window.atob(base64));
-};
-
-function goToSignin() {
-    window.location = "/?show=signin";
-}
-
 $(function(){
-    let accessToken = localStorage.getItem('accessToken', null);
-    if (!accessToken) {
-        goToSignin();
-    }
-    let oid = parseJwt(accessToken).identity;
-    let home = new Home(oid);
-
-    let tweetModal = new TweetModal();
+    let home = new Home();
+    let signedInUser = home.parseJwt(home.getAccessToken()).identity;
+    let tweetModal = new TweetModal('tweetbox');
     tweetModal.run()
 
     tweetModal.onTweetPublish = function (tweetContent) {
-        home.postTweet(oid, tweetContent).then(function(){
+        home.postTweet(signedInUser, tweetContent).then(function(){
             tweetModal.closeModal();
         });
     }
 
     $(".page-controls .logout").click(function() {
         localStorage.clear();
-        goToSignin();
+        home.goToSignin();
     })
 
     $(".page-controls .post-tweet").click(function(){
